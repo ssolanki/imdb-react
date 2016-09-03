@@ -2,17 +2,29 @@ language: node_js
 sudo: true
 dist: trusty
 node_js:
-  - "5.0"
+  - '5.0'
 script: npm run build
+env:
+  global:
+    - GH_REF: 'github.com/ssolanki/ssolanki.github.io.git'
+    - secure: >-
+        aUVCiK/GkVeLMvFX+6qS21u8BXhorcTZF/dVSTLoQBdqO7Ky9TmNNCgkbCLvK+OoyY4fXW0FQREd6hwFcTLIHoB88Am4WyesKZlmbEToRZQk6e5UkxBVUHTXxymalApMSwLY/uSKY6CD1ZA4fIaLEiprltIgdcG1s9mqjcyqElTc+EQKakA4QqH/aYKmLZ3RzYlxj00IJccj0K3c/fL3b5ox/o8jTtAfSP7Xmu1KjJ1gLGkz4/9vewF6V28/9s5wk6la8QNdD3yLAISRnQcxlPZd4vDLEyXtRh+hF7um0yd2lPCDG49H6SxpQdhVFVPFo9moCf67Go2WFQB9tfmqcM0zG+nFjebnE2MEGhuQUqVSQv67S4GpSTblRHzaKscuEcGn714OGuiJlFxdiqn+oZla/vR6meyuevEW5lH2wBre2gUCi33czOvxeymaitKlfoxyDYCj1RI6DSF83+jx+eP3U6zn2r8YxIGJOJmJhalekTH0UPUzzk1xcBw9BfXYfMzMBDonbveFzU/gCTsFFNDpdFF5zXBGkwa2m0JK0io8Z5D2HRvkmjxWoZcqhuxtMnrM9cr0og74MzFyqs2RQyQPd+lQxzWJQNyRXDaspsrz1et3PsbyrYxMxf2om01QJ0VerNCVbx8VxdMmXttd/FploISfOeqOJQPFCGR4i4A=
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
+  - 'export DISPLAY=:99.0'
   - sudo apt-get update
   - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - >-
+    wget
+    https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - sh -e /etc/init.d/xvfb start
+cache:
+  directories:
+    - node_modules
 notifications:
   email:
     on_failure: change
-after_success: 'npm run coveralls'
+after_success:
+  - npm run coveralls
+  - bash ./deploy.sh
